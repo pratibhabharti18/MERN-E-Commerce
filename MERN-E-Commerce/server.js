@@ -29,11 +29,12 @@ app.use("/api", orderRoutes);
 
 // Serve frontend in production
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "client", "build")));
+  const buildPath = path.join(__dirname, "client", "build");
+  app.use(express.static(buildPath));
 
-  // Catch-all to serve index.html for React Router
+  // Catch-all for React Router
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+    res.sendFile(path.resolve(buildPath, "index.html"));
   });
 }
 
@@ -41,10 +42,7 @@ if (process.env.NODE_ENV === "production") {
 const dbURI = process.env.MONGO_URI;
 const port = process.env.PORT || 4000;
 
-mongoose.connect(dbURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("MongoDB connected successfully"))
-.then(() => app.listen(port, () => console.log(`Server running on port ${port}`)))
-.catch(err => console.error("MongoDB connection error:", err));
+mongoose.connect(dbURI)
+  .then(() => console.log("MongoDB connected successfully"))
+  .then(() => app.listen(port, () => console.log(`Server running on port ${port}`)))
+  .catch(err => console.error("MongoDB connection error:", err));
