@@ -2,29 +2,31 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CartSchema = new Schema({
-    userId: {
-        type: String,
-        ref: "user"
+  userId: {
+    type: Schema.Types.ObjectId, // Use ObjectId for references
+    ref: 'user',
+    required: true
+  },
+  items: [{
+    productId: {
+      type: Schema.Types.ObjectId, // Use ObjectId for references
+      ref: 'item',
+      required: true
     },
-    items: [{
-        productId: {
-            type: String,
-            ref: "item"
-        },
-        name: String,
-        quantity: {
-            type: Number,
-            required: true,
-            min: [1, 'Quantity can not be less then 1.'],
-            deafult: 1
-        },
-        price: Number
-    }],
-    bill: {
-        type: Number,
-        required: true,
-        default: 0
-    }
+    name: String,
+    quantity: {
+      type: Number,
+      required: true,
+      min: [1, 'Quantity cannot be less than 1.'],
+      default: 1 // fixed typo: 'deafult' -> 'default'
+    },
+    price: Number
+  }],
+  bill: {
+    type: Number,
+    required: true,
+    default: 0
+  }
 });
 
-module.exports = Cart = mongoose.model('cart',CartSchema);
+module.exports = mongoose.model('cart', CartSchema);

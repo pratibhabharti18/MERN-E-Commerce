@@ -1,0 +1,47 @@
+# Node modules
+node_modules/
+client/node_modules/
+
+# Build outputs
+dist/
+build/
+client/dist/
+client/build/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Cache
+.cache/
+.next/
+*.tsbuildinfo
+
+# Coverage
+coverage/
+
+# Misc
+*.pid
+*.seed
+*.tgz
+*.bak
+*.tmp
