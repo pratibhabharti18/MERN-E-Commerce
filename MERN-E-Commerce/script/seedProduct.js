@@ -1,9 +1,14 @@
 const mongoose = require('mongoose');
-const config = require('config');
-const Item = require('./models/Item'); // Adjust the path if needed
+require('dotenv').config(); // Load .env
+const Item = require('../models/Item'); // Adjust the path if needed
 
-// MongoDB URI from config
-const dbURI = config.get('dbURI');
+// MongoDB URI from environment
+const dbURI = process.env.MONGO_URI;
+
+if (!dbURI) {
+  console.error("Error: MONGO_URI is not defined in .env");
+  process.exit(1);
+}
 
 // Default products (30 items)
 const defaultProducts = [
@@ -39,11 +44,12 @@ const defaultProducts = [
   { title: "Logitech MX Master 3", description: "Wireless ergonomic mouse", category: "Electronics", price: 8000 }
 ];
 
+// Connect and seed
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(async () => {
     console.log("MongoDB connected...");
 
-    // Clear existing items (optional)
+    // Optional: Clear existing items
     await Item.deleteMany({});
     console.log("Existing products cleared.");
 
@@ -55,6 +61,6 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     console.log("Seeding completed.");
   })
   .catch(err => {
-    console.error(err);
+    console.error("MongoDB connection error:", err);
     mongoose.disconnect();
   });
