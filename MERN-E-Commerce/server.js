@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
+const cors = require("cors"); // add this
 require("dotenv").config(); // load .env variables
 
 const authRoutes = require("./routes/auth");
@@ -12,6 +13,13 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+
+// CORS middleware
+app.use(cors({
+  origin: process.env.CLIENT_URL || "*", // allow your frontend URL or all origins
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 // Routes
 app.use("/api", authRoutes);
@@ -44,6 +52,3 @@ mongoose
   )
   .catch((err) => console.error("MongoDB connection error:", err));
 
-// Example: Access JWT and Stripe keys anywhere
-const jwtSecret = process.env.JWT_SECRET;
-const stripeKey = process.env.STRIPE_API_KEY;
